@@ -1,3 +1,5 @@
+
+
 const template = document.createElement('template');
 template.innerHTML = `
 <input type="text" placeholder="Add a new to do"></input>
@@ -19,8 +21,8 @@ class TodoApp extends HTMLElement{
     _renderTodoList(){
         this.$todoList.innerHTML = '';
         this._todos.forEach((todo, index) => {
-            let $todoItem = document.createElement('div');
-            $todoItem.innerHTML = todo.text;
+            let $todoItem = document.createElement('todo-item');
+            $todoItem.setAttribute('text', todo.text)
             this.$todoList.appendChild($todoItem);
         });
     }
