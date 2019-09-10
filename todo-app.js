@@ -23,6 +23,13 @@ class TodoApp extends HTMLElement{
         this._todos.forEach((todo, index) => {
             let $todoItem = document.createElement('todo-item');
             $todoItem.setAttribute('text', todo.text)
+            if(todo.checked){
+                //this will add attribute checked to todo-item with attribute value to true
+                $todoItem.setAttribute('checked', '');
+            }
+            $todoItem.setAttribute('index', index);
+            $todoItem.addEventListener('onRemove', this._removeTodo.bind(this));
+            $todoItem.addEventListener('onToggle', this._toggleTodo.bind(this));
             this.$todoList.appendChild($todoItem);
         });
     }
@@ -35,6 +42,19 @@ class TodoApp extends HTMLElement{
             this._renderTodoList();
             this.$input.value = '';
         }
+    }
+
+    _removeTodo(e) {
+        this._todos.splice(e.detail, 1);
+        this._renderTodoList();
+    }
+
+    _toggleTodo(e) {
+        const todo = this._todo[e.detail];
+        this._todo[e.detail] = Object.assign({}, todo, {
+            checked: !todo.checked
+        });
+        this._renderTodoList();
     }
 
     set todos(value){
@@ -50,6 +70,6 @@ class TodoApp extends HTMLElement{
 window.customElements.define('todo-app', TodoApp);
 
 document.querySelector('todo-app').todos = [
-    {text: "Make a to-do list", checked: false}, 
-    {text: "Finish blog post", checked: false}
+    {text: "Make a to-do list", checked: true}, 
+    {text: "Finish blog post", checked: true}
 ]
